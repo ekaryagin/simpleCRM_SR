@@ -1,0 +1,146 @@
+<!doctype html>
+<html lang="ru" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org" xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css" integrity="sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xXr2" crossorigin="anonymous">
+
+    <title>SR-CRM</title>
+</head>
+<body style="background-color: #B6A5A0;">
+
+<!-- Header -->
+
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark sticky-top" style="background-color: #514A47!important;">
+        <button class="navbar-toggler" type="button" data-toggle="collapse"
+                data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
+                aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item active">
+                    <a href="#" class="nav-link" data-toggle="modal" data-target="#aboutModal">О программе</a>
+                </li>
+                <li class="nav-item">
+                    <a th:href="@{/registration}" class="nav-link">Регистрация</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+<!-- Форма регистрации -->
+
+    <div class="container-fluid" style="margin:50px auto;">
+        <div class="text-center">
+            <form id="form-group" class="form" th:action="@{/login}" method="post">
+                <h3 style="margin:30px auto;">Авторизация</h3>
+                <div class="form-group col-sm-4" style="margin:10px auto;">
+                    <label for="authorizationInputEmail">E-mail</label>
+                    <input required type="email" class="form-control" id="authorizationInputEmail" name="username"
+                           placeholder="E-mail" onchange="checkInputsAuth()">
+                    <small style="color: darkred"></small>
+                </div>
+                <div class="form-group col-sm-4" style="margin:10px auto;">
+                    <label for="authorizationInputPass">Пароль</label>
+                    <input required type="password" class="form-control" id="authorizationInputPass" name="password"
+                           placeholder="Password" onchange="checkInputsAuth()">
+                    <small style="color: darkred"></small>
+                </div>
+                <button type="submit" class="btn btn-secondary" style="margin:30px auto;">Войти</button>
+            </form>
+        </div>
+    </div>
+
+<!-- Модальное окно о программе -->
+
+    <div class="modal fade" id="aboutModal" tabindex="-1" role="dialog" aria-labelledby="aboutModal" aria-hidden="true">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="aboutModalLable">О программе</h5>
+                    <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Nisi aliquid corporis enim natus, voluptate provident ea officia assumenda explicabo dolores asperiores eaque aperiam. Unde sapiente autem totam distinctio temporibus natus et ullam voluptate neque maxime saepe maiores libero molestiae illum porro itaque repellendus reiciendis dolores recusandae voluptatem laboriosam, facilis magnam. Nisi ut suscipit iusto blanditiis labore architecto id eos quas error ratione obcaecati, ipsum adipisci. Cupiditate consectetur, a sed voluptatum optio non omnis. Aliquid dignissimos magnam alias quo earum, sapiente recusandae omnis reiciendis facere itaque enim fugiat modi repellat doloremque quasi non, veniam quaerat porro commodi provident laudantium id error eum numquam! Suscipit ut consequatur cupiditate nisi possimus ipsum at dolores, mollitia voluptatum a vero autem illo pariatur eius dolore iure quibusdam nostrum esse ratione, rem impedit! At non, et, nihil deserunt asperiores aliquid architecto suscipit animi molestiae ullam corrupti. Aspernatur molestias dolore sint animi dolorum esse praesentium, repudiandae ad cum consequuntur at enim repellendus, aliquid cupiditate repellat fugiat nulla molestiae doloribus. Molestias iusto, maiores voluptatibus dicta iste, laboriosam cupiditate et repellendus dolorem cum error doloremque, dolor voluptas velit enim. Expedita molestiae ipsum repudiandae a doloribus officia provident nostrum mollitia nisi rem, corrupti impedit architecto, voluptatum unde, omnis eos sint repellendus odio. Doloremque architecto facilis repellat in et? Inventore sapiente cumque expedita beatae ducimus? Ex laudantium, dolore possimus totam pariatur commodi in dolor tempora ea est deleniti voluptates placeat magnam, similique omnis delectus consequatur eveniet saepe sit! Libero quaerat cumque praesentium ipsam, harum recusandae veniam quod distinctio hic sapiente id deserunt iusto temporibus voluptatum ad optio exercitationem unde magni numquam illum. Animi delectus aut voluptates corporis dolorem alias assumenda beatae ex! Assumenda iusto voluptates odit a recusandae molestiae quaerat laborum vero libero expedita voluptas quod quas repellendus impedit sit quasi aliquam iste amet, culpa magnam ipsum repudiandae. Tenetur recusandae error ipsam magni quia ad provident voluptas quae? Nobis, ut praesentium. Odio excepturi, asperiores exercitationem, culpa in repellat sunt ipsam consequuntur voluptatem sapiente nesciunt eos, eius sint quod earum tempore distinctio fuga iusto saepe. Hic tenetur odit, nihil beatae tempore consequatur voluptatibus? Magni, laboriosam! Quis atque velit totam exercitationem tenetur officia incidunt ipsum voluptatibus officiis ad. Quasi error nisi porro nam provident totam assumenda similique! Aperiam quae sed quaerat explicabo consequatur ipsam ab quod reprehenderit, deleniti ipsum? Ut itaque error impedit facere laborum perferendis assumenda porro cumque fuga obcaecati corporis nam provident inventore quidem voluptates quas eum reprehenderit, odio enim aspernatur voluptatem magnam sapiente nobis. Labore ad, nulla tempore aut asperiores sint. Nobis, culpa! Voluptas, placeat amet minus qui repellat praesentium voluptates eaque perferendis inventore assumenda, repudiandae aperiam illum ut eligendi iusto vero fugit voluptatem tempore dolore maxime, recusandae quia? Obcaecati eaque distinctio iure voluptatem dignissimos facere repudiandae officiis! Expedita, sed labore perspiciatis alias obcaecati voluptate id ipsam dolorem iure, eaque aut nesciunt commodi, illo quasi quis explicabo architecto. Ipsa cupiditate suscipit vel neque eligendi in quae labore. Aut pariatur dolorem consectetur maxime. Dicta distinctio natus laboriosam praesentium! Voluptate, quo soluta ab recusandae esse quas eum, velit perferendis placeat corporis in.</p>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-secondary" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+<!-- Сообщение об ошибках -->
+
+    <div th:if="${param.error}" style="position: absolute; left: 41%; color: darkred;">
+        Пользователь не найден или не верный пароль.
+    </div>
+    <div th:if="${param.logout}" style="position: absolute; left: 46%; color: darkred;">
+        Вы вышли из системы.
+    </div>
+
+<!-- Footer -->
+
+    <footer class="footer" style="background-color:#3D3937; height:51px; width:100%; position:fixed; bottom:0;">
+        <div class="container">
+            <p class="h6" style="float: right; color: #A8A09D;">
+                2020 @_georgich_
+            </p>
+        </div>
+    </footer>
+
+<!-- Bootstrap JS -->
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.min.js" integrity="sha384-w1Q4orYjBQndcko6MimVbzY0tgp4pWB4lZ7lr30WKz0vr/aWKhXdBNmNb5D92v7s" crossorigin="anonymous"></script>
+
+<!--email and password validation-->
+
+    <script type="text/javascript">
+
+        const emailAuth = document.getElementById('authorizationInputEmail');
+        const passwordAuth = document.getElementById('authorizationInputPass');
+
+        function checkInputsAuth() {
+
+            const emailValue = emailAuth.value.trim();
+            const passwordValue = passwordAuth.value.trim();
+
+            if(emailValue === '') {
+                setErrorFor(emailAuth, 'Поле не может быть пустым');
+            } else if (!isEmail(emailValue)) {
+                setErrorFor(emailAuth, 'Это не почта =)');
+            } else {
+                setErrorFor(emailAuth, '');
+            }
+
+            if(passwordValue === '') {
+                setErrorFor(passwordAuth, 'Поле не может быть пустым');
+            } else if (passwordValue.length <= 7) {
+                setErrorFor(passwordAuth, 'Слишком мало символов, минимум 8');
+            } else {
+                setErrorFor(passwordAuth, '');
+            }
+        }
+
+        function setErrorFor(input, message) {
+            const formControl = input.parentElement;
+            const small = formControl.querySelector('small');
+            small.innerText = message;
+        }
+
+        function isEmail(email) {
+            return /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(email);
+        }
+
+    </script>
+</body>
+</html>

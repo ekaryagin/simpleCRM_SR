@@ -1,0 +1,393 @@
+<!doctype html>
+<html lang="ru" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org" xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css" integrity="sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xXr2" crossorigin="anonymous">
+
+    <title>SR-CRM</title>
+</head>
+<body style="background-color: #B6A5A0;">
+
+<!-- Header -->
+
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark sticky-top justify-content-center" style="background-color: #514A47!important;">
+    <a th:href="@{/welcome}" class="navbar-brand">
+        <img src="../static/logoX.jpg" th:src="@{logoX.jpg}" height="60" width="66" alt=""/>
+    </a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
+            aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav mr-auto">
+            <li class="nav-item active">
+                <a href="#" class="nav-link" data-toggle="modal" data-target="#aboutModal">О программе</a>
+            </li>
+            <li class="nav-item">
+                <a th:href="@{/schedule}" class="nav-link">Расписание</a>
+            </li>
+            <li class="nav-item">
+                <a th:href="@{/staff}" class="nav-link">Сотрудники</a>
+            </li>
+            <li class="nav-item">
+                <a th:href="@{/clients}" class="nav-link">Клиенты</a>
+            </li>
+            <li class="nav-item">
+                <a th:href="@{/clients}" class="nav-link">Склад</a>
+            </li>
+            <li class="nav-item">
+                <a th:href="@{/clients}" class="nav-link">Оплата</a>
+            </li>
+            <li class="nav-item">
+                <a th:href="@{/clients}" class="nav-link">Отчеты</a>
+            </li>
+        </ul>
+        <form th:action="@{/logout}"  class="navbar-nav mr-right" method="post">
+            <button class="btn btn-secondary">Выйти</button>
+        </form>
+    </div>
+</nav>
+
+    <div class="container text-center">
+        <h2 style="margin: 30px auto auto;">Расписание</h2>
+    </div>
+
+
+<!-- Выбор мастера -->
+    <form th:action="@{/refreshSchedule}" method="post">
+        <div class="form-group blu-margin" style="margin:10px auto 10px;  width:60%;">
+            <label for="masterSelector"><b>Выберите мастера</b></label>
+            <select class="custom-select custom-select-lg"  id="masterSelector" name="master">
+                <option selected>Выберите мастера...</option>
+                <option th:each="employee : ${staff}" th:value="${employee.surname}" th:text="${employee.name} + ' ' + ${employee.surname} + ' ' + ${employee.position}"></option>
+            </select>
+        </div>
+
+<!-- Выбор даты -->
+
+        <div class="container-fluid">
+            <div class="container" style="width:60%; margin:20px auto 10px;">
+                <div class="row text-center" >
+                    <div class="col">
+                        <div class="form-group blu-margin" style="margin:0px auto 0px;  width:300px;">
+                            <label for="date"><b>Выберите дату</b></label>
+                            <input type="date" th:value="${date}" class="form-control" id="date" name="date" placeholder="Дата" required style="margin:0px 0px 30px; width:300px;" max="2021-12-30" min="2019-11-20">
+                        </div>
+                    </div>
+                    <div class="col" style="width: 300px;">
+                        <button type="submit" class="btn btn-secondary" style="margin: 32px auto;">Обновить</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+
+<!-- Календарь -->
+
+    <div class="container" style="margin-bottom:50px; margin-top:0px; text-align: center; width:100%;">
+        <h4 style="margin-bottom:20px">Расписание на выбранную дату</h4>
+        <table class="table table-striped" >
+            <thead class="thead-dark">
+            <tr>
+                <th width="10%">Дата</th>
+                <th width="10%">Время</th>
+                <th width="20%">Клиент</th>
+                <th width="10%">Телефон</th>
+                <th width="30%">Комментарий</th>
+                <th width="20%">Мастер</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="note : ${notes}">
+                <th width="15%" th:text="${note.date}">На</th>
+                <th width="15%" th:text="${note.time}">этот</th>
+                <th width="20%" th:text="${note.getClientName()}">день</th>
+                <th width="10%" th:text="${note.getClientPhone()}">совсем</th>
+                <th width="25%" th:text="${note.comment}">нет</th>
+                <th width="15%" th:text="${note.getEmployeeName()}">записей</th>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+
+<!-- Поиск и выбор клиента -->
+
+    <div class="form-group blu-margin" style="margin:10px auto 30px;  width:60%;">
+        <label for="masterSelector"><b>Выберите клиента</b></label>
+        <select class="custom-select custom-select-lg"  id="clientSelector" name="client">
+            <option selected>Выберите клиента для записи...</option>
+            <option th:each="client : ${clients}" th:value="${client.cellNumber}"
+                    th:text="${client.surname} + ' ' + ${client.name} + ' ' + ${client.cellNumber}"></option>
+        </select>
+    </div>
+
+    <div class="container-fluid">
+        <div class="container" style="margin: 0px auto 100px; width:60%;">
+            <div class="row text-center">
+                <div class="col">
+                    <form id="form-group-find" class="form" th:action="@{/findClient}" method="post">
+                        <div class="text-center">
+                            <h5 style="margin: 0px auto 10px;">Отфильтровать клиентов</h5>
+                        </div>
+                        <div class="form-group" style="margin: 10px auto;width:300px;">
+                            <select class="custom-select "  id="findSelector" name="findSelector">
+                                <option selected>Выберите фильтр</option>
+                                <option>Фильтровать по фамилии</option>
+                                <option>Фильтровать по номеру телефона</option>
+                            </select>
+                            <div class="input-group input-group mb-3">
+                                <input type="text" class="form-control" id="inputFindClient" name="findRequest"
+                                       placeholder="Выберите фильтр ↑" style="margin: 5px auto;">
+                            </div>
+                        </div>
+                        <button type="submit" class="btn btn-secondary btn-sm" style="margin: 0px auto 10px;">Найти</button>
+                    </form>
+                </div>
+                <div class="col">
+                    <button type="submit" class="btn btn-info nav-link btn-sm" style="margin: 40px auto 10px;"
+                            data-toggle="modal" data-target="#addNoteModal" onclick="addNote()">
+                        Записать выбранного клиента</button>
+                </div>
+                <div class="col">
+                    <div class="text-center">
+                        <h5 style="margin: 40px auto auto;">Добавить нового клиента</h5>
+                    </div>
+                    <button type="submit" class="btn btn-secondary nav-link btn-sm" style="margin: 10px auto 40px;"
+                            data-toggle="modal" data-target="#addClientModal">Добавить</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+<!-- Маодальное окно - добавить запись в расписание -->
+
+    <div class="modal fade" id="addNoteModal" tabindex="-1" role="dialog" aria-labelledby="addNoteModal" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="addNoteModalLable">Внесите данные</h5>
+                    <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form id="form-group-note" class="form" th:action="@{/addNote}" method="post">
+                        <input type="hidden" id="noteInputMaster" name="addNoteMaster">
+                        <input type="hidden" id="noteInputClient" name="addNoteClient">
+                        <div class="form-group">
+                            <label for="noteInputDate">Дата</label>
+                            <input type="date" class="form-control" id="noteInputDate" name="addNoteDate"
+                                   placeholder="Дата" required style="margin:0px 0px 30px; width:40%;" max="2021-12-30" min="2019-11-20">
+                            <small style="color: darkred"></small>
+                        </div>
+                        <label>Время</label>
+                        <div class="input-group input-group mb-3" style="margin:0px 0px 30px; width:250px;">
+
+                            <div class="input-group-prepend">
+                                <span class="input-group-text" id="inputGroup-sizing1">C</span>
+                            </div>
+
+                            <input type="text" class="form-control" id="noteInputTime1" name="noteInputTime1"
+                                   placeholder="ЧЧ" required pattern="[0-9]{1,2}">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text" id="inputGroup-sizing2">:</span>
+                            </div>
+                            <input type="text" class="form-control" id="noteInputTime2" name="noteInputTime2"
+                                   placeholder="ММ" required pattern="[0-9]{1,2}">
+                            <small style="color: darkred"></small>
+                        </div>
+                        <div class="input-group input-group mb-3" style="margin:0px 0px 30px; width:250px;">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text" id="inputGroup-sizing3">До</span>
+                            </div>
+                            <input type="text" class="form-control" id="noteInputTime3" name="noteInputTime3"
+                                   placeholder="ЧЧ" required pattern="[0-9]{1,2}">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text" id="inputGroup-sizing4">:</span>
+                            </div>
+                            <input type="text" class="form-control" id="noteInputTime4" name="noteInputTime4"
+                                   placeholder="ММ" required pattern="[0-9]{1,2}">
+                            <small style="color: darkred"></small>
+                        </div>
+                        <div class="form-group" style="margin-top: 30px; margin-bottom: 30px">
+                            <label for="noteInputComment">Комментарий</label>
+                            <input type="text" class="form-control" id="noteInputComment" name="addNoteComment"
+                                   placeholder="Комментарий" required>
+                            <small style="color: darkred"></small>
+                        </div>
+                        <div class="modal-footer">
+                            <button class="btn btn-secondary" type="submit" >Записать</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+<!-- Модальное окно - добавить нового клиента -->
+
+    <div class="modal fade" id="addClientModal" tabindex="-1" role="dialog" aria-labelledby="authorizationModal" aria-hidden="true">
+        <div class="modal-dialog modal-sm" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="authorizationModalLable">Внесите данные</h5>
+                    <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form id="form-group-login" class="form" th:action="@{/addClientSchedule}" method="post">
+                        <div class="form-group">
+                            <label for="regInputName">Имя</label>
+                            <input type="text" class="form-control" id="regInputName" name="name"
+                                   placeholder="Имя" required onchange="checkInputName()">
+                            <small style="color: darkred"></small>
+                        </div>
+                        <div class="form-group">
+                            <label for="regInputSurname">Фамилия</label>
+                            <input type="text" class="form-control" id="regInputSurname" name="surname"
+                                   placeholder="Фамилия" required onchange="checkInputSurname()">
+                            <small style="color: darkred"></small>
+                        </div>
+                        <div class="form-group">
+                            <label for="regInputCellNumber">Телефон</label>
+                            <div class="input-group input-group mb-3">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text" id="inputGroup-sizing">+7</span>
+                                </div>
+                                <input type="text" class="form-control" id="regInputCellNumber" name="cellNumber"
+                                       placeholder="Сотовый номер" required onchange="checkInputCellNumber()">
+                                <small style="color: darkred"></small>
+                            </div>
+                        </div>
+                        <button class="btn btn-secondary" type="submit" style="margin-top:30px;">Добавить</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+<!-- Модальное окно о программе -->
+
+    <div class="modal fade" id="aboutModal" tabindex="-1" role="dialog" aria-labelledby="aboutModal" aria-hidden="true">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="aboutModalLable">О программе</h5>
+                    <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Nisi aliquid corporis enim natus, voluptate provident ea officia assumenda explicabo dolores asperiores eaque aperiam. Unde sapiente autem totam distinctio temporibus natus et ullam voluptate neque maxime saepe maiores libero molestiae illum porro itaque repellendus reiciendis dolores recusandae voluptatem laboriosam, facilis magnam. Nisi ut suscipit iusto blanditiis labore architecto id eos quas error ratione obcaecati, ipsum adipisci. Cupiditate consectetur, a sed voluptatum optio non omnis. Aliquid dignissimos magnam alias quo earum, sapiente recusandae omnis reiciendis facere itaque enim fugiat modi repellat doloremque quasi non, veniam quaerat porro commodi provident laudantium id error eum numquam! Suscipit ut consequatur cupiditate nisi possimus ipsum at dolores, mollitia voluptatum a vero autem illo pariatur eius dolore iure quibusdam nostrum esse ratione, rem impedit! At non, et, nihil deserunt asperiores aliquid architecto suscipit animi molestiae ullam corrupti. Aspernatur molestias dolore sint animi dolorum esse praesentium, repudiandae ad cum consequuntur at enim repellendus, aliquid cupiditate repellat fugiat nulla molestiae doloribus. Molestias iusto, maiores voluptatibus dicta iste, laboriosam cupiditate et repellendus dolorem cum error doloremque, dolor voluptas velit enim. Expedita molestiae ipsum repudiandae a doloribus officia provident nostrum mollitia nisi rem, corrupti impedit architecto, voluptatum unde, omnis eos sint repellendus odio. Doloremque architecto facilis repellat in et? Inventore sapiente cumque expedita beatae ducimus? Ex laudantium, dolore possimus totam pariatur commodi in dolor tempora ea est deleniti voluptates placeat magnam, similique omnis delectus consequatur eveniet saepe sit! Libero quaerat cumque praesentium ipsam, harum recusandae veniam quod distinctio hic sapiente id deserunt iusto temporibus voluptatum ad optio exercitationem unde magni numquam illum. Animi delectus aut voluptates corporis dolorem alias assumenda beatae ex! Assumenda iusto voluptates odit a recusandae molestiae quaerat laborum vero libero expedita voluptas quod quas repellendus impedit sit quasi aliquam iste amet, culpa magnam ipsum repudiandae. Tenetur recusandae error ipsam magni quia ad provident voluptas quae? Nobis, ut praesentium. Odio excepturi, asperiores exercitationem, culpa in repellat sunt ipsam consequuntur voluptatem sapiente nesciunt eos, eius sint quod earum tempore distinctio fuga iusto saepe. Hic tenetur odit, nihil beatae tempore consequatur voluptatibus? Magni, laboriosam! Quis atque velit totam exercitationem tenetur officia incidunt ipsum voluptatibus officiis ad. Quasi error nisi porro nam provident totam assumenda similique! Aperiam quae sed quaerat explicabo consequatur ipsam ab quod reprehenderit, deleniti ipsum? Ut itaque error impedit facere laborum perferendis assumenda porro cumque fuga obcaecati corporis nam provident inventore quidem voluptates quas eum reprehenderit, odio enim aspernatur voluptatem magnam sapiente nobis. Labore ad, nulla tempore aut asperiores sint. Nobis, culpa! Voluptas, placeat amet minus qui repellat praesentium voluptates eaque perferendis inventore assumenda, repudiandae aperiam illum ut eligendi iusto vero fugit voluptatem tempore dolore maxime, recusandae quia? Obcaecati eaque distinctio iure voluptatem dignissimos facere repudiandae officiis! Expedita, sed labore perspiciatis alias obcaecati voluptate id ipsam dolorem iure, eaque aut nesciunt commodi, illo quasi quis explicabo architecto. Ipsa cupiditate suscipit vel neque eligendi in quae labore. Aut pariatur dolorem consectetur maxime. Dicta distinctio natus laboriosam praesentium! Voluptate, quo soluta ab recusandae esse quas eum, velit perferendis placeat corporis in.</p>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-secondary" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+<!-- Footer -->
+
+    <footer class="footer p-t-1" style="background-color:#3D3937; height:51px; width:100%; position:fixed; bottom:0;">
+        <div class="container">
+
+            <p class="h6" style="float: right; color: #A8A09D;">
+                2020 @_georgich_
+            </p>
+        </div>
+    </footer>
+
+
+<!-- Bootstrap JS -->
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.min.js" integrity="sha384-w1Q4orYjBQndcko6MimVbzY0tgp4pWB4lZ7lr30WKz0vr/aWKhXdBNmNb5D92v7s" crossorigin="anonymous"></script>
+
+<!--validation-->
+
+    <script type="text/javascript">
+
+        const nameReg = document.getElementById('regInputName');
+        const surnameReg = document.getElementById('regInputSurname');
+        const cellNumberReg = document.getElementById('regInputCellNumber');
+
+        const findSelector = document.getElementById('findSelector');
+        const inputFindClient = document.getElementById('inputFindClient');
+
+        const inputAddNoteDate = document.getElementById('noteInputDate');
+        const inputDate = document.getElementById('date');
+        const inputAddNoteMaster = document.getElementById('noteInputMaster');
+        const inputMaster = document.getElementById('masterSelector');
+        const inputAddNoteCliebt = document.getElementById('noteInputClient');
+        const inputClient = document.getElementById('clientSelector');
+
+
+        function addNote(){
+            inputAddNoteDate.value = inputDate.value;
+            inputAddNoteMaster.value = inputMaster.value;
+            inputAddNoteCliebt.value = inputClient.value;
+        }
+
+        document.getElementById('findSelector').addEventListener('change', function(e) {
+            if (findSelector.value === "Фильтровать по фамилии"){
+                inputFindClient.placeholder = "Введите фамилию кого ищем"
+            } else if(findSelector.value === "Фильтровать по номеру телефона"){
+                inputFindClient.placeholder = "Введите телефон кого ищем"
+            } else {
+                inputFindClient.placeholder = "Выберите фильтр ↑"
+            }
+        })
+
+        function checkInputName() {
+            const nameRegValue = nameReg.value.trim();
+            if(nameRegValue.length < 2) {
+                setErrorFor(nameReg, 'Имен меньше двух букв не бывает =)');
+            } else {
+                setErrorFor(nameReg, '');
+            }
+        }
+
+        function checkInputSurname() {
+            const surnameRegValue = surnameReg.value.trim();
+            if(surnameRegValue.length < 2) {
+                setErrorFor(surnameReg, 'Фамилий меньше двух букв не бывает =)');
+            } else {
+                setErrorFor(surnameReg, '');
+            }
+        }
+
+        function checkInputCellNumber() {
+            const cellNumberRegValue = cellNumberReg.value.trim();
+
+            if (cellNumberRegValue.length !== 10){
+                setErrorFor(cellNumberReg, 'Введите 10 цифр, без +7 или 8');
+            } else if(!isCellNumber(cellNumberRegValue)) {
+                setErrorFor(cellNumberReg, 'Введите 10 цифр, без +7 или 8');
+            } else {
+                setErrorFor(cellNumberReg, '');
+            }
+        }
+
+        function setErrorFor(input, message) {
+            const formControl = input.parentElement;
+            const small = formControl.querySelector('small');
+            small.innerText = message;
+        }
+
+        function isCellNumber(cellNumber) {
+            return /\d{10}/.test(cellNumber);
+        }
+
+</script>
+</body>
+</html>
